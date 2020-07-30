@@ -9,7 +9,7 @@ var authenticate = require('./authenticate')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-// to do route
+var todoRouter = require('./routes/todos')
 
 const mongoose = require('mongoose')
 
@@ -64,7 +64,7 @@ app.use(auth) // auth middleware to make sure authentication
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routers here  
-
+app.use('/todos',todoRouter)
 
 
 // catch 404 and forward to error handler
