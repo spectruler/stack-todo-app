@@ -11,8 +11,9 @@ const ToDoSchema = new Schema({
         default: false,
     },
     author: {
-        type: String,
-        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 },{
     timestamps: true

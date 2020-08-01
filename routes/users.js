@@ -2,6 +2,7 @@ var express = require('express');
 const bodyParser = require('body-parser')
 var User = require('../models/users')
 var passport = require('passport')
+var jwt = require('jsonwebtoken')
 
 var router = express.Router();
 router.use(bodyParser.json())
@@ -32,7 +33,9 @@ router.post('/signup',(req,res,next)=>{
 router.post('/login',passport.authenticate('local'),(req,res)=>{
   res.statusCode = 200
   res.setHeader('Content-Type','application/json')
-  res.json({success:true, status:'You are successfully logged in'})
+  const token = jwt.sign({username: req.user.username, userId: req.user._id},
+    'Shh!! This is secret!', {expiresIn: '1h'})
+  res.json({token: token, expiresIn: 3600})
 })
 
 // user logout route 

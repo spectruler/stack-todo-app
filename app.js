@@ -1,11 +1,13 @@
 var createError = require('http-errors');
 var express = require('express');
+var cors = require('cors')
 var path = require('path');
 // var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session')
 var passport = require('passport')
 var authenticate = require('./authenticate')
+var jwt = require('jsonwebtoken')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -30,6 +32,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
@@ -50,12 +53,16 @@ app.use('/',indexRouter)
 app.use('/users',usersRouter)
 
 function auth(req,res,next){
-  if(!req.user){
-    var err = new Error('You are not authenticated!')
-    err.statusCode = 401
-    return next(err)
-  }else{
+  try{
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, 'Shh!! This is secret!')
+    // console.log(decodedToken);
+    req.userData = {username: decodedToken.username, 
+                    userId: decodedToken.userId}
     next()
+  }
+  catch(error){
+      res.status(401).json({message: 'Auth failed!'})
   }
 }
 
@@ -80,7 +87,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json('error');
 });
 
 module.exports = app;
