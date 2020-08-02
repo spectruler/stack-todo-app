@@ -18,7 +18,7 @@ const mongoose = require('mongoose')
 const ToDo = require('./models/todos')
 
 // connect to mongodb server
-const URL =" mongodb+srv://pal:todoapp@cluster0.ym1ek.gcp.mongodb.net/toDo?retryWrites=true&w=majority" ||'mongodb://localhost:27017/toDo'
+const URL = process.env.MONGODB_URI ||'mongodb://localhost:27017/toDo'
 const connect = mongoose.connect(URL)
 
 connect.then(db => { // connect promise 
