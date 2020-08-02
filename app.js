@@ -18,7 +18,7 @@ const mongoose = require('mongoose')
 const ToDo = require('./models/todos')
 
 // connect to mongodb server
-const URL = 'mongodb://localhost:27017/toDo'
+const URL =" mongodb+srv://pal:todoapp@cluster0.ym1ek.gcp.mongodb.net/toDo?retryWrites=true&w=majority" ||'mongodb://localhost:27017/toDo'
 const connect = mongoose.connect(URL)
 
 connect.then(db => { // connect promise 
@@ -35,6 +35,7 @@ app.use(logger('dev'));
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use('/',express.static(path.join(__dirname,'angular')))
 // app.use(cookieParser());
 
 // create express session 
@@ -49,8 +50,15 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/',indexRouter)
+
+// app.use('/',indexRouter)
+
 app.use('/users',usersRouter)
+
+app.use('/angular',(req,res,next)=>{
+  res.sendFile(path.join(__dirname,'angular','index.html'))
+})
+
 
 function auth(req,res,next){
   try{
