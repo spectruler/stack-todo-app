@@ -1,6 +1,8 @@
 # ToDo App 
 ToDo App is a mean stack based web app which implements front-end with angular,
 and backend with node, express and mongoDB. 
+This carries Backend code, and angular build application.
+The angular frontend code can be found [here](https://github.com/spectruler/todo-app): https://github.com/spectruler/todo-app.
 
 # Features 
 * It starts with authorization.
